@@ -48,8 +48,8 @@ all : $(PROGRAMS)
 # Programs
 #
 
-dmidecode$(EXEEXT) : dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o dmidecode-res.o 
-	$(CC) $(LDFLAGS) dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o dmidecode-res.o -o $@
+dmidecode$(EXEEXT) : dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o
+	$(CC) $(LDFLAGS) dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o -o $@
 
 biosdecode$(EXEEXT) : biosdecode.o util.o winsmbios.o biosdecode-res.o
 	$(CC) $(LDFLAGS) biosdecode.o util.o winsmbios.o biosdecode-res.o -o $@
