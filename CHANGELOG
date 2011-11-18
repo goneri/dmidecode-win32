@@ -1,3 +1,130 @@
+2010-11-24  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Assume that the max power capacity is expressed in
+	  Watts, not milliWatts (DMI type 39). The specification isn't
+	  clear about the actual unit, but the only implementation I've
+	  seen (HP Proliant G7) clearly uses Watts. Also, using milliWatts
+	  would limit the max value that can be stored to 32 W, which
+	  doesn't make much sense.
+	* dmidecode.c: Fix offset of partition width (DMI type 19).
+	* dmidecode.c: Decode BIOS language information flags
+	  (DMI type 13).
+	* dmidecode.c: Fix CPU flags mask (DMI type 4).
+	* dmidecode.c: Reword "PCI Express Gen 2" to just "PCI Express 2"
+	  (DMI type 9).
+	* dmidecode.c: Decode the slot ID for all PCI Express and PCI
+	  Express 2 slots (DMI type 9).
+
+2010-11-24  Jean Delvare  <khali@linux-fr.org>
+
+	Update to support SMBIOS specification version 2.7.0.
+
+	* dmidecode.c: Update all references to the SMBIOS specification
+	  to match the new numbering.
+	* dmidecode.c: Add UEFI support and virtual machine flags to BIOS
+	  characteristics (DMI type 0).
+	* dmideocde.c: Add SKU number field to system enclosure or chassis
+	  (DMI type 3).
+	* dmidecode.c: Add many Intel, AMD and VIA CPU family names
+	  (DMI type 4).
+	* dmidecode.c: Add many socket formats (DMI type 4).
+	* dmidecode.c: Add processor characteristics flags (DMI type 4).
+	* util.c, util.h: Add utility function u64_range, which computes
+	  the range between two u64 values.
+	* dmidecode.c: Add support for memory arrays of 2 TB and more
+	  (DMI types 16, 19 and 20).
+	* dmidecode.c: Add support for memory devices of 32 GB and more
+	  (DMI type 17).
+	* dmidecode.c: Add description of cooling device (DMI type 27).
+	* dmidecode.c: Add limited support for new DMI type 42 (Management
+	  Controller Host Interface).
+
+2010-11-16  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Handle ambiguous processor family value 0x30
+	  (DMI type 4).
+	* dmidecode.c: Prevent unlikely array overrun when decoding
+	  processor family value 0xBE (DMI type 4).
+	* dmidecode.c: Handle DMI type 2 record of size 0x0E.
+
+2010-11-11  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Fix decoding of IPMI base address LSB.
+
+2010-11-09  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Drop redundant/obsolete references to
+	  CIM_Processor.Family.
+
+2010-10-26  Jean Delvare  <khali@linux-fr.org>
+
+	Update to support Intel AP-485 (CPUID) revision 36 (was 32).
+
+	* dmidecode.c: Update the link to the AP-485 document, the revision
+	  and the table number.
+	* dmidecode.c: Update two CPU flag descriptions (FXSR and HTT).
+	  Drop CPU flag IA64.
+	* dmidecode.c: Update the list of processors for which we decode the
+	  CPUID flags.
+
+2010-10-11  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: One more SMBIOS version fix-up case.
+	* Makefile: Rework BSD make compatibility trick. The previous
+	  trick would break GNU make 3.82.
+
+2010-09-29  Anton Arapov  <anton@redhat.com>
+
+	* util.c: makes dmidecode fall back to regular reads if the mmap
+	  fails. Patch from Olof Johansson.
+
+2010-09-21  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Fix Xeon 7xxx entries in CPU name lookup table
+	  (DMI type 4). Patch from Paul Flo Williams.
+
+2009-08-28  Jarod Wilson  <jarod@redhat.com>
+
+	Update to support SMBIOS specification version 2.6.1.
+
+	* dmidecode.c: Add processor types "Dual-Core Xeon 5200",
+	  "Dual-Core Xeon 7200", "Quad-Core Xeon 7300", "QuadCore Xeon 7400",
+	  "Multi-Core Xeon 7400", "Core i7", "Dual-Core Celeron",
+	  "Multi-Core Xeon", "Dual-Core Xeon 3xxx", "Quad-Core Xeon 3xxx",
+	  "Dual-Core Xeon 5xxx", "Quad-Core Xeon 5xxx", "Dual-Core Xeon 7xxx",
+	  "Quad-Core Xeon 7xxx" and "Multi-Core Xeon 7xxx" (DMI type 4).
+	* dmidecode.c: Add slot types "PCI Express Gen 2 x1",
+	  "PCI Express Gen 2 x2", "PCI Express Gen 2 x4",
+	  "PCI Express Gen 2 x8" and "PCI Express Gen 2 x16" (DMI type 9).
+	* dmidecode.c: Add memory device types "DDR3" and "FB-DIMM"
+	  (DMI type 17).
+	* dmidecode.c: Add cache associativity types "12-way Set-associative",
+	  "24-way Set-associative", "32-way Set-associative",
+	  "48-way Set-associative" and "64-way Set-associative" (DMI type 7).
+
+2009-07-27  Jean Delvare  <khali@linux-fr.org>
+
+	* dmioem.c: Recognize "Hewlett-Packard" as a possible DMI vendor
+	  string for HP. Orginal patch from Thomas Hiller (HP).
+	* dmidecode.c: Add processor upgrade type "Socket LGA1366"
+	  (DMI type 4).
+
+2009-06-19  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Fix decoding of memory array capacity. A maximum
+	  capacity of 128 GB would erroneously be reported as Unknown,
+	  while a unknown capacity would be erroneously reported as 2048
+	  GB. Bug reported by Lin Li (HP).
+
+2009-04-30  Jean Delvare  <khali@linux-fr.org>
+
+	* dmidecode.c: Warn if decoding an SMBIOS implementation which is
+	  newer than what we support.
+
+2009-04-04  Jean Delvare  <khali@linux-fr.org>
+
+	* Makefile: Clarify license.
+
 2008-11-23  Jean Delvare  <khali@linux-fr.org>
 
 	* biosdecode.c: Stop using the inline keyword. It causes more

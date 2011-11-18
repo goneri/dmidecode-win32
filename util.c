@@ -2,7 +2,7 @@
  * Common "util" functions
  * This file is part of the dmidecode project.
  *
- *   Copyright (C) 2002-2008 Jean Delvare <khali@linux-fr>
+ *   Copyright (C) 2002-2010 Jean Delvare <khali@linux-fr>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@
 #include "types.h"
 #include "util.h"
 
-#ifndef USE_MMAP
 static int myread(int fd, u8 *buf, size_t count, const char *prefix)
 {
 	ssize_t r = 1;
@@ -78,7 +77,6 @@ static int myread(int fd, u8 *buf, size_t count, const char *prefix)
 
 	return 0;
 }
-#endif
 
 int checksum(const u8 *buf, size_t len)
 {
@@ -128,12 +126,7 @@ void *mem_chunk(size_t base, size_t len, const char *devmem)
 	 */
 	mmp = mmap(0, mmoffset + len, PROT_READ, MAP_SHARED, fd, base - mmoffset);
 	if (mmp == MAP_FAILED)
-	{
-		fprintf(stderr, "%s: ", devmem);
-		perror("mmap");
-		free(p);
-		return NULL;
-	}
+		goto try_read;
 
 	memcpy(p, (u8 *)mmp + mmoffset, len);
 
@@ -142,7 +135,12 @@ void *mem_chunk(size_t base, size_t len, const char *devmem)
 		fprintf(stderr, "%s: ", devmem);
 		perror("munmap");
 	}
-#else /* USE_MMAP */
+
+	goto out;
+
+#endif /* USE_MMAP */
+
+try_read:
 	if (lseek(fd, base, SEEK_SET) == -1)
 	{
 		fprintf(stderr, "%s: ", devmem);
@@ -156,8 +154,8 @@ void *mem_chunk(size_t base, size_t len, const char *devmem)
 		free(p);
 		return NULL;
 	}
-#endif /* USE_MMAP */
 
+out:
 	if (close(fd) == -1)
 		perror(devmem);
 
@@ -202,4 +200,20 @@ int write_dump(size_t base, size_t len, const void *data, const char *dumpfile, 
 err_close:
 	fclose(f);
 	return -1;
+}
+
+/* Returns end - start + 1, assuming start < end */
+u64 u64_range(u64 start, u64 end)
+{
+	u64 res;
+
+	res.h = end.h - start.h;
+	res.l = end.l - start.l;
+
+	if (end.l < start.l)
+		res.h--;
+	if (++res.l == 0)
+		res.h++;
+
+	return res;
 }

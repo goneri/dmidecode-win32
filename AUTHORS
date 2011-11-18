@@ -1,8 +1,9 @@
 DEVELOPER AND MAINTAINER
-Jean Delvare <khali@linux-fr.org>
+Anton Arapov <anton@redhat.com>
 
-ORIGINAL AUTHOR
+ORIGINAL AUTHORS
 Alan Cox <alan@redhat.com>
+Jean Delvare <khali@linux-fr.org>
 
 CODE CONTRIBUTORS (IN CHRONOLOGICAL ORDER)
 Matt Domsch <Matt_Domsch@dell.com>
@@ -14,6 +15,7 @@ Petter Reinholdtsen <pere@hungry.com>
 Roberto Nibali <ratz@tac.ch>
 John Cagle <jcagle@kernel.org>
 Jens Elkner <elkner@linofee.org>
+Jarod Wilson <jarod@redhat.com>
 
 MANY THANKS TO (IN CHRONOLOGICAL ORDER)
 Werner Heuser
@@ -68,3 +70,14 @@ Stuart Hayes
 Sofian Brabez
 Vincent Pelletier
 Andreas Gruenbacher
+Lin Li
+Thomas Hiller
+Paul Flo Williams
+Olof Johansson
+Alexandre Lissy
+Michal Svec
+Vojtech Pavlik
+Murlin Wenzel
+Harald Mueller-Ney
+Lars Mueller
+Thomas Mingarelli
