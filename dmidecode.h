@@ -18,12 +18,4 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-struct dmi_header
-{
-	u8 type;
-	u8 length;
-	u16 handle;
-	u8 *data;
-};
-
 const char *dmi_string(const struct dmi_header *dm, u8 s);

@@ -30,12 +30,18 @@
 
 #include "config.h"
 
+#ifdef __WIN32__
+    #include "winsmbios.h"
+#else
 #ifdef USE_MMAP
 #include <sys/mman.h>
 #ifndef MAP_FAILED
 #define MAP_FAILED ((void *) -1)
 #endif /* !MAP_FAILED */
 #endif /* USE MMAP */
+#endif /* __WIN32__ */
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,6 +95,15 @@ int checksum(const u8 *buf, size_t len)
 		sum += buf[a];
 	return (sum == 0);
 }
+
+
+#ifdef _WIN32
+
+void *mem_chunk(size_t base, size_t len, const char *devmem){
+	return mem_chunk_win(base, len);
+}
+
+#else
 
 /*
  * Copy a physical memory chunk into a memory buffer.
@@ -163,6 +178,8 @@ void *mem_chunk(size_t base, size_t len, const char *devmem)
 
 	return p;
 }
+
+#endif /* _WIN32 */
 
 int write_dump(size_t base, size_t len, const void *data, const char *dumpfile, int add)
 {

@@ -8,6 +8,23 @@ typedef unsigned short u16;
 typedef signed short i16;
 typedef unsigned int u32;
 
+struct dmi_header
+{
+	u8 type;
+	u8 length;
+	u16 handle;
+	u8 *data;
+};
+/*
+struct dmi_header
+struct dmi_header
+{
+	u8 type;
+	u8 length;
+	u16 handle;
+};
+*/
+
 /*
  * You may use the following defines to adjust the type definitions
  * depending on the architecture:

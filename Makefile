@@ -8,25 +8,25 @@
 #	Licensed under the GNU Public License.
 #
 
-CC      = gcc
+CC      = /usr/bin/i586-mingw32msvc-gcc 
 CFLAGS  = -W -Wall -Wshadow -Wstrict-prototypes -Wpointer-arith -Wcast-qual \
           -Wcast-align -Wwrite-strings -Wmissing-prototypes -Winline -Wundef
 #CFLAGS += -DBIGENDIAN
 #CFLAGS += -DALIGNMENT_WORKAROUND
 
 # When debugging, disable -O2 and enable -g.
-CFLAGS += -O2
+CFLAGS += -O3
 #CFLAGS += -g
 
 # Pass linker flags here
 LDFLAGS =
 
 DESTDIR =
-prefix  = /usr/local
+prefix  = C:/Progra~1/DmiDecode
 sbindir = $(prefix)/sbin
-mandir  = $(prefix)/share/man
+mandir  = $(prefix)/man
 man8dir = $(mandir)/man8
-docdir  = $(prefix)/share/doc/dmidecode
+docdir  = $(prefix)/doc
 
 INSTALL         := install
 INSTALL_DATA    := $(INSTALL) -m 644
@@ -34,8 +34,7 @@ INSTALL_DIR     := $(INSTALL) -m 755 -d
 INSTALL_PROGRAM := $(INSTALL) -m 755
 RM              := rm -f
 
-PROGRAMS := dmidecode
-PROGRAMS += $(shell test `uname -m 2>/dev/null` != ia64 && echo biosdecode ownership vpddecode)
+PROGRAMS := dmidecode$(EXEEXT)
 # BSD make doesn't understand the $(shell) syntax above, it wants the !=
 # syntax below. GNU make ignores the line below so in the end both BSD
 # make and GNU make are happy.
@@ -47,17 +46,17 @@ all : $(PROGRAMS)
 # Programs
 #
 
-dmidecode : dmidecode.o dmiopt.o dmioem.o util.o
-	$(CC) $(LDFLAGS) dmidecode.o dmiopt.o dmioem.o util.o -o $@
+dmidecode$(EXEEXT) : dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o dmidecode-res.o 
+	$(CC) $(LDFLAGS) dmidecode.o dmiopt.o dmioem.o util.o winsmbios.o dmidecode-res.o -o $@
 
-biosdecode : biosdecode.o util.o
-	$(CC) $(LDFLAGS) biosdecode.o util.o -o $@
+biosdecode$(EXEEXT) : biosdecode.o util.o winsmbios.o biosdecode-res.o
+	$(CC) $(LDFLAGS) biosdecode.o util.o winsmbios.o biosdecode-res.o -o $@
 
-ownership : ownership.o util.o
-	$(CC) $(LDFLAGS) ownership.o util.o -o $@
+ownership$(EXEEXT) : ownership.o util.o winsmbios.o ownership-res.o
+	$(CC) $(LDFLAGS) ownership.o util.o winsmbios.o ownership-res.o -o $@
 
-vpddecode : vpddecode.o vpdopt.o util.o
-	$(CC) $(LDFLAGS) vpddecode.o vpdopt.o util.o -o $@
+vpddecode$(EXEEXT) : vpddecode.o vpdopt.o util.o winsmbios.o vpddecode-res.o
+	$(CC) $(LDFLAGS) vpddecode.o vpdopt.o util.o winsmbios.o vpddecode-res.o -o $@
 
 #
 # Objects
@@ -87,6 +86,10 @@ vpdopt.o : vpdopt.c config.h util.h vpdopt.h
 
 util.o : util.c types.h util.h config.h
 	$(CC) $(CFLAGS) -c $< -o $@
+	
+winsmbios.o : winsmbios.c types.h winsmbios.h config.h
+	$(CC) $(CFLAGS) -c $< -o $@
+	
 
 #
 # Commands
@@ -111,7 +114,7 @@ uninstall-bin :
 install-man :
 	$(INSTALL_DIR) $(DESTDIR)$(man8dir)
 	for program in $(PROGRAMS) ; do \
-	$(INSTALL_DATA) man/$$program.8 $(DESTDIR)$(man8dir) ; done
+	$(INSTALL_DATA) $(SRCDIRSL)man/$${program%.exe}.8 $(DESTDIR)$(man8dir) ; done
 
 uninstall-man :
 	for program in $(PROGRAMS) ; do \
@@ -119,9 +122,9 @@ uninstall-man :
 
 install-doc :
 	$(INSTALL_DIR) $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) README $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) CHANGELOG $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) AUTHORS $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) $(SRCDIRSL)README $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) $(SRCDIRSL)CHANGELOG $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) $(SRCDIRSL)AUTHORS $(DESTDIR)$(docdir)
 
 uninstall-doc :
 	$(RM) -r $(DESTDIR)$(docdir)
