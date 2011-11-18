@@ -1,11 +1,15 @@
 #
-#	DMI Decode
-#	BIOS Decode
+#   DMI Decode
+#   BIOS Decode
+#   VPD Decode
 #
-#	Copyright (C) 2000-2002 Alan Cox <alan@redhat.com>
-#	Copyright (C) 2002-2007 Jean Delvare <khali@linux-fr.org>
+#   Copyright (C) 2000-2002 Alan Cox <alan@redhat.com>
+#   Copyright (C) 2002-2007 Jean Delvare <khali@linux-fr.org>
 #
-#	Licensed under the GNU Public License.
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
 #
 
 CC      = /usr/bin/i586-mingw32msvc-gcc 
@@ -33,12 +37,10 @@ INSTALL_DATA    := $(INSTALL) -m 644
 INSTALL_DIR     := $(INSTALL) -m 755 -d
 INSTALL_PROGRAM := $(INSTALL) -m 755
 RM              := rm -f
+EXEEXT          := ".exe"
 
 PROGRAMS := dmidecode$(EXEEXT)
-# BSD make doesn't understand the $(shell) syntax above, it wants the !=
-# syntax below. GNU make ignores the line below so in the end both BSD
-# make and GNU make are happy.
-PROGRAMS != echo dmidecode ; test `uname -m 2>/dev/null` != ia64 && echo biosdecode ownership vpddecode
+
 
 all : $(PROGRAMS)
 
